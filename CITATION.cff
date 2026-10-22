@@ -1,0 +1,65 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+title: "dutch-opendata-name-reader"
+abstract: >-
+  Pipeline that builds lists of Dutch first names and surnames from open data (Kiesraad candidate lists, Wikidata, SSA baby names and Statbel first names). The lists are used as reference data for detecting personal information in the GitHub security infrastructure of the Amsterdam UMC.
+authors:
+  - family-names: "van der Velde"
+    given-names: "Bauke"
+    orcid: "https://orcid.org/0000-0002-0365-3862"
+    affiliation: "Amsterdam UMC"
+  - family-names: "Pronk"
+    given-names: "Thomas"
+    orcid: "https://orcid.org/0000-0001-9334-7190"
+    affiliation: "Amsterdam UMC"
+version: 0.1.0
+# Fill in on release: the DOI reserved on Zenodo for this version, and the release date.
+# doi: 10.5281/zenodo.XXXXXXX
+# date-released: 2026-MM-DD
+license: Apache-2.0
+repository-code: "https://github.com/AmsterdamUMC/dutch-opendata-name-reader"
+keywords:
+  - "Dutch names"
+  - "open data"
+  - "reference data"
+  - "personal information"
+  - "data leak prevention"
+references:
+  - type: report
+    title: "GitHub Security Infrastructure at the Amsterdam UMC"
+    authors:
+      - family-names: "van der Velde"
+        given-names: "Bauke"
+      - family-names: "Pronk"
+        given-names: "Thomas"
+    doi: 10.5281/zenodo.22655794
+  - type: manual
+    title: "Technical Maintenance Guide of GitHub Security Infrastructure at the Amsterdam UMC"
+    authors:
+      - family-names: "van der Velde"
+        given-names: "Bauke"
+      - family-names: "Pronk"
+        given-names: "Thomas"
+    doi: 10.5281/zenodo.22789041
+  - type: data
+    title: "Verkiezingsuitslagen en kandidatenlijsten"
+    authors:
+      - name: "Kiesraad"
+    url: "https://data.overheid.nl"
+  - type: database
+    title: "Wikidata"
+    authors:
+      - name: "Wikimedia Foundation"
+    url: "https://www.wikidata.org"
+  - type: data
+    title: "Baby Names from Social Security Card Applications - National Data"
+    authors:
+      - name: "U.S. Social Security Administration"
+    url: "https://www.ssa.gov/oact/babynames/limits.html"
+  - type: data
+    title: "First names of the total population by municipality"
+    authors:
+      - name: "Statbel (Directorate-General Statistics - Statistics Belgium)"
+    url: "https://statbel.fgov.be/en/open-data/first-names-total-population-municipality-16"
+    license: CC-BY-4.0
