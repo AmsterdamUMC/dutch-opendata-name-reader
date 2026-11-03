@@ -26,9 +26,8 @@ import urllib.request
 from pathlib import Path
 
 USER_AGENT = (
-    "dutch-opendata-name-reader/0.1 "
-    "(https://github.com/AmsterdamUMC/dutch-opendata-name-reader; "
-    "b.vandervelde@amsterdamumc.nl)"
+    "dutch-opendata-name-reader/1.0 "
+    "(https://github.com/AmsterdamUMC/dutch-opendata-name-reader)"
 )
 SSA_URL = "https://www.ssa.gov/oact/babynames/names.zip"
 STATBEL_URL = (

@@ -30,9 +30,8 @@ from pathlib import Path
 ENDPOINT = "https://query.wikidata.org/sparql"
 # The query service requires a descriptive User-Agent with a contact.
 USER_AGENT = (
-    "dutch-opendata-name-reader/0.1 "
-    "(https://github.com/AmsterdamUMC/dutch-opendata-name-reader; "
-    "b.vandervelde@amsterdamumc.nl)"
+    "dutch-opendata-name-reader/1.0 "
+    "(https://github.com/AmsterdamUMC/dutch-opendata-name-reader)"
 )
 # Netherlands (country) and Kingdom of the Netherlands: both are used as
 # citizenship on Wikidata.

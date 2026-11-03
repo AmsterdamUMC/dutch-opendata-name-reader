@@ -26,9 +26,8 @@ from pathlib import Path
 
 API = "https://data.overheid.nl/data/api/3/action"
 USER_AGENT = (
-    "dutch-opendata-name-reader/0.1 "
-    "(https://github.com/AmsterdamUMC/dutch-opendata-name-reader; "
-    "b.vandervelde@amsterdamumc.nl)"
+    "dutch-opendata-name-reader/1.0 "
+    "(https://github.com/AmsterdamUMC/dutch-opendata-name-reader)"
 )
 TITLE_RE = re.compile(r"^verkiezingsuitslag", re.IGNORECASE)
 
