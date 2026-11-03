@@ -135,8 +135,8 @@ def test_wikidata_tsv_and_select(tmp_path):
 def _ssa_zip(path):
     with zipfile.ZipFile(path, "w") as z:
         z.writestr("yob1930.txt", "Oldname,M,500\n")
-        z.writestr("yob2020.txt", "Mason,M,150\nMason,F,5\nRarename,F,7\n")
-        z.writestr("yob2021.txt", "Mason,M,160\n")
+        z.writestr("yob2020.txt", "Zayn,M,150\nZayn,F,5\nRarename,F,7\n")
+        z.writestr("yob2021.txt", "Zayn,M,160\n")
         z.writestr("NationalReadMe.pdf", "x")
 
 
@@ -152,7 +152,7 @@ def _statbel_zip(path):
 def test_read_ssa_sums_years_from(tmp_path):
     _ssa_zip(tmp_path / "names.zip")
     counts = nl.read_ssa(tmp_path / "names.zip", from_year=1940)
-    assert counts == Counter({"Mason": 315, "Rarename": 7})
+    assert counts == Counter({"Zayn": 315, "Rarename": 7})
     assert nl.read_ssa(tmp_path / "missing.zip") == Counter()
 
 
@@ -178,9 +178,9 @@ def test_build_combines_sources_with_thresholds(tmp_path):
         cwd=tmp_path, check=True, capture_output=True,
     )
     first = (tmp_path / "out" / "common-dutch-firstnames.txt").read_text(encoding="utf-8").split()
-    # Mason: 315 US births >= 200; Lio: 13 Belgians >= 10;
+    # Zayn: 315 US births >= 200; Lio: 13 Belgians >= 10;
     # Rarename (7 births) and François (5 people) are below the thresholds.
-    assert first == ["Anna", "Lio", "Mason"]
+    assert first == ["Anna", "Lio", "Zayn"]
 
 
 def test_vote_count_files_are_skipped(tmp_path):
@@ -189,3 +189,35 @@ def test_vote_count_files_are_skipped(tmp_path):
         z.writestr("Telling_GR2099_Test.eml.xml", EML)
         z.writestr("Kandidatenlijsten_GR2099_Test.eml.xml", EML)
     assert len(list(nl.read_kiesraad(tmp_path))) == 2
+
+
+def test_is_common_word():
+    assert nl.is_common_word("Even") and nl.is_common_word("Trust")
+    assert not nl.is_common_word("Zayn") and not nl.is_common_word("Fenna")
+
+
+def test_month_and_min_abbreviations_excluded():
+    assert nl.first_names_from("Jul Jun Sep Sun Min") == []
+
+
+def test_build_drops_ssa_only_common_words(tmp_path):
+    import subprocess, sys
+    from pathlib import Path
+    repo = Path(__file__).resolve().parent.parent
+    w = tmp_path / "w"; w.mkdir()
+    # "Even" is also supported by Dutch sources here, "Trust" is not.
+    (w / "given-names.tsv").write_text("name\tpersons\titem\nEven\t2\tQ1\n", encoding="utf-8")
+    with zipfile.ZipFile(tmp_path / "names.zip", "w") as z:
+        z.writestr("yob2020.txt", "Even,M,500\nTrust,M,500\nHunter,M,400000\nZayn,M,500\n")
+    subprocess.run(
+        [sys.executable, str(repo / "build-name-lists.py"),
+         "--kiesraad", str(tmp_path / "none"), "--wikidata", str(w),
+         "--ssa", str(tmp_path / "names.zip"), "--statbel", str(tmp_path / "none"),
+         "--out", str(tmp_path / "out")],
+        cwd=tmp_path, check=True, capture_output=True,
+    )
+    first = (tmp_path / "out" / "common-dutch-firstnames.txt").read_text(encoding="utf-8").split()
+    # Trust and Hunter: SSA-only common words -> dropped, however many births.
+    # Even: common word but supported by a Dutch source -> kept.
+    # Zayn: not a common word -> kept.
+    assert first == ["Even", "Zayn"]

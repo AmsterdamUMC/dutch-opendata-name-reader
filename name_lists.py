@@ -33,6 +33,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Iterator, NamedTuple
 
+from wordfreq import zipf_frequency
+
 # Mirrors `word_token` in personal_info.py (org-security-workflows):
 # letter runs, joined by an internal - or '. Digits, periods and a
 # leading apostrophe are never part of a token.
@@ -55,12 +57,13 @@ SURNAME_PREFIXES = {
 # Entries that occur as names but, in scanned code and text, almost
 # always mean something else: place-name prefixes ("Sint Maarten", "San
 # Francisco", "Costa Rica", "Den Haag"), weekday abbreviations in dates
-# ("Mon May 12"), the article "The" ("The Django") and font names ("Fira
-# Sans"). Kept deliberately short: the detection already requires a
-# capitalised first name next to a capitalised surname.
+# ("Mon May 12"), month abbreviations ("Jul", "Sep"), "Min" ("Min Max"),
+# the article "The" ("The Django") and font names ("Fira Sans"). Kept
+# deliberately short: the detection already requires a capitalised first
+# name next to a capitalised surname.
 EXCLUDED_FIRST_NAMES = {
     "Sint", "Saint", "San", "Santa", "Santo", "Las", "Costa", "Sierra",
-    "Den", "The", "Mon", "Thu",
+    "Den", "The", "Mon", "Thu", "Sun", "Jun", "Jul", "Sep", "Min",
 }
 EXCLUDED_SURNAMES = {"Sans", "Sint", "The"}
 
@@ -93,6 +96,17 @@ def _lowercase_prefixes(words: list[str]) -> list[str]:
         else:
             break
     return out
+
+
+# A name is a common word when its word frequency in English or Dutch is
+# at least this, on the Zipf scale (3 is about once per million words).
+COMMON_WORD_ZIPF = 3.5
+
+
+def is_common_word(name: str, zipf: float = COMMON_WORD_ZIPF) -> bool:
+    """True if the name is also a common English or Dutch word ("Even", "Trust")."""
+    low = name.lower()
+    return zipf_frequency(low, "en") >= zipf or zipf_frequency(low, "nl") >= zipf
 
 
 def is_valid_first_name(name: str) -> bool:

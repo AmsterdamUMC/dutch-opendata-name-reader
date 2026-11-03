@@ -14,9 +14,9 @@ authors:
     orcid: "https://orcid.org/0000-0001-9334-7190"
     affiliation: "Amsterdam UMC"
 version: 0.1.0
-# Fill in on release: the DOI reserved on Zenodo for this version, and the release date.
+# Fill in after the first release: the DOI Zenodo assigns.
 # doi: 10.5281/zenodo.XXXXXXX
-# date-released: 2026-MM-DD
+date-released: 2026-11-03
 license: Apache-2.0
 repository-code: "https://github.com/AmsterdamUMC/dutch-opendata-name-reader"
 keywords:

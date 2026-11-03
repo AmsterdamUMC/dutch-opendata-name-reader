@@ -15,7 +15,11 @@ Election candidates are adults, and Wikidata mostly covers notable and older peo
 
 ## Requirements
 
-Python 3.10 or newer. The scripts use only the standard library; `pytest` (in `requirements-dev.txt`) is needed for the tests.
+Python 3.10 or newer and the packages in `requirements.txt` (only [wordfreq](https://pypi.org/project/wordfreq/), used by `build-name-lists.py`; the fetch scripts use only the standard library):
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Data setup
 
@@ -75,8 +79,9 @@ Options: `--kiesraad DIR`, `--wikidata DIR`, `--ssa FILE`, `--statbel DIR`, `--m
 - Counts, per name, how many distinct people carry it, in each source
 - Keeps a name when the count summed over the Dutch sources (Kiesraad and Dutch Wikidata) is at least `--min-persons`. Neither source gives a population frequency, so this replaces the frequency threshold; it also keeps out names that only one person in the data has
 - Also keeps a first name when it was given to at least `--ssa-min-births` babies in the US since `--ssa-from-year`, or when at least `--statbel-min-persons` people in Belgium carry it (summed over municipalities). These thresholds are higher because both are population-wide counts that include many rare names
+- Drops a first name that only the SSA supports and that is also a common English or Dutch word ("Even", "York", "Trust", "Haven"). In scanned code and text these are nearly always the word ("Even Bos", "Los Angeles", "Bank Trust"). This also drops some real names that are words (Hunter, Harper, Willow, River); that is accepted to keep false positives down. Word frequencies come from wordfreq (`COMMON_WORD_ZIPF` in `name_lists.py`); a name supported by the Kiesraad, Wikidata or Statbel data is never dropped this way
 - Normalises names the way the detection splits text into words (`word_token` in `personal_info.py`): letters only, internal hyphens and apostrophes kept, periods, digits and a leading apostrophe dropped; typographic apostrophes become `'`
-- First names: a call name with several names ("Jan Willem") counts for each; names of one or two letters, all-caps entries and a short exclusion list (place-name prefixes such as "Sint" and "San", weekday abbreviations, "The") are dropped
+- First names: a call name with several names ("Jan Willem") counts for each; names of one or two letters, all-caps entries and a short exclusion list (place-name prefixes such as "Sint" and "San", weekday and month abbreviations, "Min", "The") are dropped
 - Surnames: written in natural order with lower-case prefixes ("van der Berg"). Double surnames are kept whole and also split into their parts ("Smit-van Dijk" also gives "Smit" and "van Dijk"). Entries of one or two letters, all-caps entries, bare prefixes and a short exclusion list are dropped
 
 ## Attribution

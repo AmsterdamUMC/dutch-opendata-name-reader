@@ -15,6 +15,12 @@ when at least --statbel-min-persons (default 10) people in Belgium carry
 it. These thresholds are higher because both are population-wide counts
 that include many rare names.
 
+A first name that only the SSA supports and that is also a common
+English or Dutch word ("Even", "York", "Trust", "Haven") is dropped. In
+scanned code and text such names are nearly always the word ("Even
+Bos", "Los Angeles", "Bank Trust"). Word frequencies come from the
+wordfreq package.
+
 Usage:
     python build-name-lists.py [--kiesraad data/raw/kiesraad]
                                [--wikidata data/raw/wikidata]
@@ -91,11 +97,12 @@ def main():
         statbel = nl.read_statbel(Path(args.statbel))
         print(f"  {len(statbel)} first names")
 
-    first = sorted(
-        set(nl.select(k_first, w_first, min_persons=args.min_persons))
-        | set(nl.select(ssa, min_persons=args.ssa_min_births))
-        | set(nl.select(statbel, min_persons=args.statbel_min_persons))
-    )
+    supported = (set(nl.select(k_first, w_first, min_persons=args.min_persons))
+                 | set(nl.select(statbel, min_persons=args.statbel_min_persons)))
+    ssa_only = set(nl.select(ssa, min_persons=args.ssa_min_births)) - supported
+    ssa_words = {n for n in ssa_only if nl.is_common_word(n)}
+    first = sorted(supported | (ssa_only - ssa_words))
+    print(f"  {len(ssa_words)} SSA-only first names dropped as common words")
     sur = nl.select(k_sur, w_sur, min_persons=args.min_persons)
 
     out = Path(args.out)
