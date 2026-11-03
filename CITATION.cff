@@ -13,7 +13,7 @@ authors:
     given-names: "Thomas"
     orcid: "https://orcid.org/0000-0001-9334-7190"
     affiliation: "Amsterdam UMC"
-version: 0.1.0
+version: 1.0.0
 # Fill in after the first release: the DOI Zenodo assigns.
 # doi: 10.5281/zenodo.XXXXXXX
 date-released: 2026-11-03
