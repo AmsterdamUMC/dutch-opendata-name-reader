@@ -1,5 +1,7 @@
 # Dutch Open-Data Name Lists
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23918637.svg)](https://doi.org/10.5281/zenodo.23918637)
+
 Builds the lists of Dutch first names and surnames that the GitHub security infrastructure of the Amsterdam UMC uses to detect full names (a known first name next to a known surname). The results are committed as `personal-info-lists/common-dutch-firstnames.txt` and `common-dutch-surnames.txt` in [org-security-workflows](https://github.com/AmsterdamUMC/org-security-workflows).
 
 The lists are built only from open data:
